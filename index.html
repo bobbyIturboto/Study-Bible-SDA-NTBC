@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bible Study</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2f5d8a"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Bible"><link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#fff;--fg:#1c1c1e;--mut:#6b6b70;--ac:#2f5d8a;--card:#f2f2f5}
+@media(prefers-color-scheme:dark){:root{--bg:#111;--fg:#eee;--mut:#9a9aa0;--ac:#7fb0e0;--card:#1e1e22}}
+body{margin:0;font:18px/1.6 Georgia,serif;background:var(--bg);color:var(--fg);padding-bottom:70px}
+main{padding:16px;max-width:700px;margin:auto}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;padding:14px 2px;border:0;background:none;color:var(--mut);font-size:15px}
+nav button.on{color:var(--ac);font-weight:700}
+.card{background:var(--card);border-radius:12px;padding:12px;margin:10px 0}
+button.a,select{font-size:16px;padding:8px 12px;border-radius:8px;border:1px solid var(--ac);background:none;color:var(--ac)}
+.v{cursor:pointer}.v sup{color:var(--ac);font-size:.65em;margin-right:3px}.v.sel{background:var(--card)}
+small,.m{color:var(--mut);font-size:14px;font-family:system-ui}
+label{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-family:system-ui}
+
+:root[data-theme=light]{--bg:#fff;--fg:#1c1c1e;--mut:#6b6b70;--ac:#2f5d8a;--card:#f2f2f5}
+:root[data-theme=dark]{--bg:#111;--fg:#eee;--mut:#9a9aa0;--ac:#7fb0e0;--card:#1e1e22}
+:root[data-theme=sepia]{--bg:#f4ecd8;--fg:#3b3226;--mut:#7a6c58;--ac:#8a5a2b;--card:#eadfc6}
+html,body{overflow-anchor:none}#rtext{overflow-anchor:none;padding:0 16px;max-width:var(--tw,700px);margin:auto;font:var(--fs,19px)/var(--lh,1.7) var(--ff,Georgia,serif)}
+@keyframes swl{from{transform:translateX(60px);opacity:0}to{transform:none;opacity:1}}@keyframes swr{from{transform:translateX(-60px);opacity:0}to{transform:none;opacity:1}}.swl{animation:swl .4s cubic-bezier(.37,0,.63,1) both}.swr{animation:swr .4s cubic-bezier(.37,0,.63,1) both}
+.nvn .v sup{display:none}.just #rtext{text-align:justify;hyphens:auto}
+.rbar{position:sticky;top:0;z-index:5;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding:8px 12px;padding-top:calc(8px + env(safe-area-inset-top));background:var(--bg);border-bottom:1px solid var(--card)}
+.chb{font:600 11px system-ui,sans-serif;vertical-align:middle;margin-left:8px;padding:3px 9px;border-radius:12px;border:1px solid var(--ac);background:none;color:var(--ac)}
+section.ch{content-visibility:auto;contain-intrinsic-size:auto 1400px;padding-bottom:24px}
+section.ch h2{font-family:system-ui,sans-serif;font-size:1.1em}
+.v{cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;border-radius:3px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+sup.n{color:var(--ac);font-size:.6em;margin-right:3px;font-family:system-ui,sans-serif}
+.v.hl{background:color-mix(in srgb,var(--hc,#f5d742) 40%,transparent)}
+.v.sel{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px;text-decoration-color:var(--ac)}
+.v.hn sup.n::after{content:"\270E";margin-left:2px}
+.v.hb sup.n::before{content:"\25C6";margin-right:2px}
+.note{background:var(--card);border-radius:10px;padding:10px 12px;margin:8px 0;touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;font:16px/1.4 system-ui,sans-serif}
+.note .np{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-wrap}
+.note.sel{outline:2px solid var(--ac);background:color-mix(in srgb,var(--ac) 14%,var(--card))}
+.note.lift{opacity:.35}.note.ib{box-shadow:0 -3px 0 var(--ac)}.note.ia{box-shadow:0 3px 0 var(--ac)}
+.shelf{margin:14px 0;padding:6px 0 6px 10px;border-radius:6px;transition:background .15s}
+.shelf.drop{background:color-mix(in srgb,var(--ac) 12%,transparent)}
+.shelf .sh{display:flex;gap:8px;align-items:center;font-family:system-ui,sans-serif;font-size:17px}
+.shelf .empty{padding:14px;text-align:center}
+.nsbar{position:sticky;top:0;z-index:12;display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:8px;margin-bottom:8px;background:var(--card);border-radius:10px;box-shadow:0 2px 8px #0003;font-family:system-ui,sans-serif}
+.ghost{position:fixed;left:0;top:0;width:min(80vw,320px);z-index:40;pointer-events:none;background:var(--card);border:2px solid var(--ac);border-radius:10px;padding:10px 12px;box-shadow:0 8px 24px #0005;opacity:.95;font:16px/1.4 system-ui,sans-serif;max-height:110px;overflow:hidden}
+.ghost .badge{position:absolute;right:-8px;top:-10px;background:var(--ac);color:var(--bg);border-radius:12px;min-width:24px;height:24px;line-height:24px;text-align:center;font-weight:700}
+body.nsdrag{-webkit-user-select:none;user-select:none;overflow-anchor:none}
+#undo{position:fixed;left:12px;right:12px;bottom:calc(60px + env(safe-area-inset-bottom));z-index:30;background:#222;color:#fff;padding:12px 14px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;font:15px system-ui}
+#undo[hidden]{display:none}#undo button{background:none;border:0;color:#7fb0e0;font-size:15px;font-weight:700}
+.pc{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pc.hl{background:color-mix(in srgb,var(--hc,#f5d742) 40%,var(--card))}
+.pc.sel{outline:2px solid var(--ac)}
+.pc.hn small::after{content:" \270E"}
+#abar[data-mode=egw] .vo{display:none}
+.v.flash{animation:fl 1.8s}@keyframes fl{0%,60%{background:color-mix(in srgb,var(--ac) 35%,transparent)}}
+#rgs{position:fixed;left:12px;right:12px;top:64px;background:var(--bg);border:1px solid var(--ac);border-radius:10px;box-shadow:0 8px 20px #0005;z-index:40;max-height:62vh;overflow:auto;font-family:system-ui,sans-serif}
+#rgs[hidden]{display:none}#rgs div{padding:12px 14px;border-bottom:1px solid var(--card);font-size:16px}
+#rgs .gt{font:12px system-ui,sans-serif;color:var(--mut);padding:8px 14px 4px;text-transform:uppercase;letter-spacing:.06em;border-bottom:0}
+#rgs .gh{display:flex;gap:8px;align-items:center;position:sticky;top:0;background:var(--bg);z-index:1;padding:8px 10px}
+#rgs .gg{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:8px;padding:10px;border:0}
+#rgs .gb{min-height:46px;font-size:17px;border-radius:10px;border:1px solid var(--mut);background:var(--card);color:var(--fg);font-family:system-ui,sans-serif}
+#rgs .gb.on{background:var(--ac);color:var(--bg);border-color:var(--ac);font-weight:700}
+#abar{position:fixed;left:0;right:0;bottom:calc(50px + env(safe-area-inset-bottom));z-index:15;display:flex;flex-direction:column;gap:8px;padding:10px 12px;background:var(--card);border-top:1px solid var(--mut)}
+#sheet{will-change:transform;overscroll-behavior:contain}#sheet.up{animation:sup .28s cubic-bezier(.2,.8,.2,1)}@keyframes sup{from{transform:translateY(100%)}}#sheet .grab{width:44px;height:5px;border-radius:3px;background:var(--mut);opacity:.6;margin:-8px auto 10px}
+#abar[hidden],#sheet[hidden],#rui[hidden]{display:none}
+.sw{flex:0 0 34px;height:34px;border-radius:50%;border:2px solid var(--bg);padding:0;color:#000;font:700 18px/1 system-ui;text-shadow:0 0 3px #fff}.sw.tk{border-color:var(--fg)}
+#abar .ar{display:flex;gap:8px;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain;scroll-behavior:smooth}#abar .ar::-webkit-scrollbar{display:none}#abar{touch-action:pan-x}
+.sw.more{background:var(--card);color:var(--fg);border-color:var(--mut);font-size:20px;text-shadow:none}.sw.pop{animation:pop .2s ease-out}@keyframes pop{from{transform:scale(.6);opacity:0}}
+#abar .stack{position:relative;flex:0 0 auto;height:34px;padding:0;border:0;background:none}#abar .stack i{position:absolute;top:0;width:34px;height:34px;border-radius:50%;border:2px solid var(--bg);box-sizing:border-box;font:700 18px/30px system-ui;text-align:center;font-style:normal;color:#000;text-shadow:0 0 3px #fff}#abar .stack i.tk{border-color:var(--fg)}
+#abar .ab{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:60px;padding:4px 6px;background:none;border:0;color:var(--fg);font:11px system-ui,sans-serif}#abar .ab:active{opacity:.5}#abar .ab svg{color:var(--ac)}
+#abar .top{padding:2px 0 4px;touch-action:none}#abar .grab2{width:44px;height:5px;border-radius:3px;background:var(--mut);opacity:.6;margin:0 auto 8px}
+#abar .sl{text-align:center;font:14px system-ui,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#abar .sl span{color:var(--mut)}#abar .hint{text-align:center;font:12px system-ui,sans-serif;color:var(--mut);letter-spacing:.04em}
+#abar button.a{flex:0 0 auto;white-space:nowrap}
+#sheet{position:fixed;left:0;right:0;bottom:0;z-index:25;max-height:70vh;overflow:auto;background:var(--bg);border-top:2px solid var(--ac);padding:16px 16px calc(16px + env(safe-area-inset-bottom));font-family:system-ui,sans-serif}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:130px;background:#000c;color:#fff;padding:8px 14px;border-radius:20px;opacity:0;transition:opacity .2s;z-index:30;pointer-events:none;font:14px system-ui}
+nav{z-index:20}
+</style></head><body><div id="reader"></div><main id="app"></main>
+<script src="reader.js"></script>
+<script src="sourcebook.js"></script>
+<script src="notes.js"></script>
+<nav><button data-t="read" class="on">Read</button><button data-t="search">Search</button><button data-t="notes">Notes</button><button data-t="egw">EGW</button><button data-t="lib">Library</button><button data-t="me">Me</button></nav>
+<script>
+// ---- Catalog: add new translations here (license must be filled in) ----
+const CATALOG=[
+ {id:"NKJV",lang:"en",name:"New King James Version",license:"NOT LICENSED YET. Private use only. Do not share."},
+ {id:"KJV",lang:"en",name:"King James Version",license:"Public Domain"},
+ {id:"LUT1912",lang:"de",name:"Luther 1912",license:"Public Domain (verify)"},
+ {id:"BG1871",lang:"bg",name:"Bulgarian Bible 1871",license:"Public Domain (verify)"},
+ {id:"BG1940",lang:"bg",name:"Bulgarian Bible 1940",license:"VERIFY before use"}
+];
+const LANGS={en:"English",de:"Deutsch",bg:"Български"};
+// ---- IndexedDB ----
+const db=new Promise((ok,no)=>{const r=indexedDB.open("bible",8);
+ r.onupgradeneeded=()=>{const d=r.result;if(!d.objectStoreNames.contains("tr"))d.createObjectStore("tr",{keyPath:"id"});if(!d.objectStoreNames.contains("egw"))d.createObjectStore("egw",{keyPath:"id"});if(!d.objectStoreNames.contains("top"))d.createObjectStore("top",{keyPath:"id"});for(const n of["mark","note","bm","shelf","xref","snote","sbook"])if(!d.objectStoreNames.contains(n))d.createObjectStore(n,{keyPath:"id"})};
+ r.onsuccess=()=>{r.result.onversionchange=()=>r.result.close();ok(r.result)};r.onerror=no;
+ r.onblocked=()=>{document.body.insertAdjacentHTML("afterbegin","<p style='padding:16px;font-family:system-ui;color:#b00'>The app database is being upgraded, but another tab or window with this app is still open. Close all other copies of this page, then reload.</p>")}});
+const tx=async(st,m,f)=>{const d=await db;return new Promise(ok=>{const s=d.transaction(st,m).objectStore(st);const q=f(s);q.onsuccess=()=>ok(q.result)})};
+const getTr=id=>tx("tr","readonly",s=>s.get(id)), putTr=o=>tx("tr","readwrite",s=>s.put(o)), allTr=()=>tx("tr","readonly",s=>s.getAll());
+const delTr=id=>tx("tr","readwrite",s=>s.delete(id));
+const putTop=o=>tx("top","readwrite",s=>s.put(o)), allTop=()=>tx("top","readonly",s=>s.getAll());
+const putSb=o=>tx("sbook","readwrite",s=>s.put(o));
+const putSn=o=>tx("snote","readwrite",s=>s.put(o));
+const putXref=o=>tx("xref","readwrite",s=>s.put(o));
+const putEgw=o=>tx("egw","readwrite",s=>s.put(o)), allEgw=()=>tx("egw","readonly",s=>s.getAll()), delEgw=id=>tx("egw","readwrite",s=>s.delete(id));
+// ---- Settings (per-language toggles for EGW and SDA Commentary) ----
+const S=JSON.parse(localStorage.getItem("s")||'{"egw":{"en":true,"de":true,"bg":true},"com":{"en":true,"de":true,"bg":true},"tr":"KJV","bk":"JHN","ch":"3"}');
+const save=()=>localStorage.setItem("s",JSON.stringify(S));
+let tab="read",sel=null,msg="",eb=null,ep=null,ec=null;
+const ORD="GEN EXO LEV NUM DEU JOS JDG RUT 1SA 2SA 1KI 2KI 1CH 2CH EZR NEH EST JOB PSA PRO ECC SNG ISA JER LAM EZK DAN HOS JOL AMO OBA JON MIC NAM HAB ZEP HAG ZEC MAL MAT MRK LUK JHN ACT ROM 1CO 2CO GAL EPH PHP COL 1TH 2TH 1TI 2TI TIT PHM HEB JAS 1PE 2PE 1JN 2JN 3JN JUD REV".split(" ");
+const BN="Genesis,Exodus,Leviticus,Numbers,Deuteronomy,Joshua,Judges,Ruth,1 Samuel,2 Samuel,1 Kings,2 Kings,1 Chronicles,2 Chronicles,Ezra,Nehemiah,Esther,Job,Psalms,Proverbs,Ecclesiastes,Song of Solomon,Isaiah,Jeremiah,Lamentations,Ezekiel,Daniel,Hosea,Joel,Amos,Obadiah,Jonah,Micah,Nahum,Habakkuk,Zephaniah,Haggai,Zechariah,Malachi,Matthew,Mark,Luke,John,Acts,Romans,1 Corinthians,2 Corinthians,Galatians,Ephesians,Philippians,Colossians,1 Thessalonians,2 Thessalonians,1 Timothy,2 Timothy,Titus,Philemon,Hebrews,James,1 Peter,2 Peter,1 John,2 John,3 John,Jude,Revelation".split(",");
+const bname=c=>BN[ORD.indexOf(c)]||c, rx=w=>w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+const TIME="GEN JOB EXO LEV NUM DEU JOS JDG RUT 1SA 2SA PSA 1CH 1KI PRO ECC SNG 2KI 2CH JOL JON AMO HOS ISA MIC NAM ZEP JER HAB LAM OBA EZK DAN EZR HAG ZEC EST NEH MAL MAT MRK LUK JHN ACT JAS GAL 1TH 2TH 1CO 2CO ROM COL PHM EPH PHP 1TI TIT 1PE HEB 2TI 2PE JUD 1JN 2JN 3JN REV".split(" ");
+let SQ={q:"",scope:"bible",order:"bible",exact:false,test:"all",book:"all",lim:100,topic:null};
+function stem(w){w=w.toLowerCase();for(const x of["ingly","ing","edly","ed","es","e","s","ly"])if(w.endsWith(x)&&w.length-x.length>=3)return w.slice(0,-x.length);return w}
+function term(w,exact,phrase){if(phrase)return new RegExp("\\b"+w.trim().split(/\s+/).map(rx).join("\\s+")+"\\b","i");
+ return exact||w.length<4?new RegExp("\\b"+rx(w)+"\\b","i"):new RegExp("\\b"+rx(stem(w))+"\\w*","i")}
+function parseQ(q,exact){const cl=[{must:[],not:[]}];let neg=false;
+ for(const m of q.matchAll(/"([^"]+)"|(\S+)/g)){const ph=m[1],w=m[2];
+  if(!ph&&w==="OR"){cl.push({must:[],not:[]});neg=false;continue}
+  if(!ph&&w==="AND")continue;
+  if(!ph&&w==="NOT"){neg=true;continue}
+  let t=ph||w,n=neg;neg=false;if(!ph&&t[0]==="-"){n=true;t=t.slice(1)}
+  if(!t)continue;(n?cl[cl.length-1].not:cl[cl.length-1].must).push(term(t,exact,!!ph))}
+ return cl.filter(c=>c.must.length)}
+function linkMap(eg){const m={};eg.forEach(x=>x.paras.forEach(p=>(p.refs||[]).forEach(r=>{const k=x.id==="SDABC-EGW"?"c":"e";(m[r]=m[r]||{e:0,c:0})[k]++})));return m}
+function hl(text,cl){const all=cl.flatMap(c=>c.must);let t=text;all.forEach(r=>{t=t.replace(new RegExp(r.source,"gi"),m=>"\u0001"+m+"\u0002")});
+ return esc(t).replace(/\u0001/g,"<mark>").replace(/\u0002/g,"</mark>")}
+function vtext(t,id){const[b,c,v]=id.split(".");return t.books[b]&&t.books[b][c]&&t.books[b][c][v]}
+function verseRow(t,id,lm,cl){const x=vtext(t,id);if(!x)return"";const[b,c,v]=id.split("."),l=lm[id]||{e:0,c:0};
+ return `<div class="card" onclick="goVerse('${id}')"><b>${bname(b)} ${c}:${v}</b> <small>${l.e?"EGW "+l.e+" ":""}${l.c?"Comm. "+l.c:""}</small><br>${cl?hl(x,cl):esc(x)}</div>`}
+function topicsOf(tp){const T={};tp.forEach(x=>Object.entries(x.topics).forEach(([k,v])=>{const o=T[k]=T[k]||{refs:[],see:[]};o.refs=[...new Set(o.refs.concat(v.refs))];o.see=[...new Set(o.see.concat(v.see||[]))];if(v.note){o.note=v.note;o.src=v.src;o.status=v.status}if(v.bg)o.bg=v.bg;if(v.status&&!o.status)o.status=v.status;if(v.src&&!o.src)o.src=v.src}));return T}
+function liveSearch(v){   // search as you type: only the results are replaced, the input keeps its focus and keyboard
+ SQ.q=v;SQ.topic=null;SQ.lim=100;if(!window.__sv||tab!=="search")return render();
+ const app=document.getElementById("app"),inp=document.getElementById("sq");if(!inp)return render();
+ const d=document.createElement("div");d.innerHTML=searchView(window.__sv.t,window.__sv.eg,window.__sv.tp);
+ while(inp.nextSibling)inp.nextSibling.remove();[...d.children].slice(1).forEach(n=>app.appendChild(n))}
+function searchView(t,eg,tp){
+ const lm=linkMap(eg),box=`<input id="sq" value="${esc(SQ.q)}" placeholder='word, "phrase", love OR grace, faith NOT works' style="width:100%;font-size:18px;padding:10px;border-radius:8px;border:1px solid var(--ac);background:var(--bg);color:var(--fg);box-sizing:border-box" oninput="clearTimeout(window.__st);const v=this.value;window.__st=setTimeout(()=>liveSearch(v),400)" onkeydown="if(event.key==='Enter'){clearTimeout(window.__st);liveSearch(this.value)}" enterkeyhint="search" autocomplete="off">`+
+ `<p><button class="a" onclick="liveSearch(document.getElementById('sq').value)">Search</button> <label>Exact words only<input type="checkbox" ${SQ.exact?"checked":""} onchange="SQ.exact=this.checked;render()"></label>`+
+ `<select onchange="SQ.scope=this.value;SQ.lim=100;render()"><option value="bible">Bible</option><option value="egw" ${SQ.scope==="egw"?"selected":""}>Ellen White &amp; Commentary</option></select> <select onchange="SQ.order=this.value;render()"><option value="bible">Bible order</option><option value="time" ${SQ.order==="time"?"selected":""}>Timeline (approx.)</option></select> <select onchange="SQ.test=this.value;render()"><option value="all">All</option><option value="ot" ${SQ.test==="ot"?"selected":""}>Old Testament</option><option value="nt" ${SQ.test==="nt"?"selected":""}>New Testament</option></select> `+
+ `<select onchange="SQ.book=this.value;render()"><option value="all">All books</option>${ORD.map((c,i)=>`<option value="${c}" ${SQ.book===c?"selected":""}>${BN[i]}</option>`).join("")}</select></p>`;
+ let out="";const q=SQ.q.trim();
+ if(SQ.topic){const T=topicsOf(tp),tt=T[SQ.topic];
+  out+=`<button class="a" onclick="SQ.topic=null;render()">Back</button><h3>${esc(SQ.topic)}${tt.bg?` <small>(${esc(tt.bg)})</small>`:""}</h3>${tt.note?`<div class="card">${esc(tt.note)}<br><small>${esc(tt.src||"")} · ${esc(tt.status||"")}</small></div>`:tt.status==="not translated yet"?`<p class="m">English explanation not written yet. Source: ${esc(tt.src||"")}</p>`:""}<p class="m">${tt.refs.length} verses</p>`+
+   (tt.see.length?`<p>See also: ${tt.see.map(s=>`<button class="a" onclick="SQ.topic='${s.replace(/'/g,"\\'")}';render()">${esc(s)}</button>`).join(" ")}</p>`:"")+
+   (SQ.order==="time"?[...tt.refs].sort((a,b)=>TIME.indexOf(a.split(".")[0])-TIME.indexOf(b.split(".")[0])):tt.refs).slice(0,SQ.lim).map(id=>verseRow(t,id,lm,null)).join("");return box+out}
+ if(!q)return box+`<p class="m">Search ${esc(t.id)} offline. Use quotes for phrases, OR, NOT or a minus sign.${tp.length?" Topics from your imported index appear too.":" Import a topic file (Library) to search by topic."}</p>`;
+ // topics matching the query
+ if(tp.length){const T=topicsOf(tp),ws=q.toLowerCase().replace(/["]/g,"").split(/\s+/).filter(w=>w.length>2&&!["and","not","the"].includes(w));
+  const hit=Object.keys(T).filter(k=>T[k].refs.length&&ws.length&&ws.every(w=>k.toLowerCase().includes(stem(w))||(T[k].bg||"").toLowerCase().includes(w))).sort((a,b)=>a.length-b.length).slice(0,12);
+  if(hit.length)out+=`<h3>Topics</h3><p>`+hit.map(k=>`<button class="a" onclick="SQ.topic='${k.replace(/'/g,"\\'")}';SQ.lim=100;render()">${esc(k)} (${T[k].refs.length})</button>`).join(" ")+`</p>`}
+ const cl=parseQ(q,SQ.exact);if(!cl.length)return box+out;
+ if(SQ.scope==="egw"){const hits=[],per={};
+  eg.forEach(x=>{if(x.lang!==t.lang||(x.id==="SDABC-EGW"?!S.com[x.lang]:!S.egw[x.lang]))return;
+   x.paras.forEach(p=>{if(cl.some(k=>k.must.every(r=>r.test(p.text))&&!k.not.some(r=>r.test(p.text)))){hits.push([x,p]);per[x.id]=(per[x.id]||0)+1}})});
+  return box+out+`<h3>${hits.length} paragraphs</h3><p class="m">${Object.keys(per).map(k=>k+" "+per[k]).join(" · ")}</p>`+
+   hits.slice(0,SQ.lim).map(([x,p])=>{const m=cl[0].must[0].exec(p.text),i=m?Math.max(0,m.index-100):0;
+    return `<div class="card"><small>${esc(p.id)}</small><br>${i?"… ":""}${hl(p.text.slice(i,i+300),cl)}${p.text.length>i+300?" …":""}<br><button class="a" onclick="openEgw('${x.id}','${p.id}')">Open</button></div>`}).join("")+
+   (hits.length>SQ.lim?`<p><button class="a" onclick="SQ.lim+=100;render()">Show more</button></p>`:"")}
+ const res=[],per={};
+ for(const b of (SQ.order==="time"?TIME:ORD)){if(!t.books[b])continue;const ot=ORD.indexOf(b)<39;if(SQ.test==="ot"&&!ot||SQ.test==="nt"&&ot||SQ.book!=="all"&&SQ.book!==b)continue;
+  const chs=t.books[b];for(const c of Object.keys(chs).sort((a,b)=>a-b))for(const v of Object.keys(chs[c]).sort((a,b)=>a-b)){const x=chs[c][v];
+   if(cl.some(k=>k.must.every(r=>r.test(x))&&!k.not.some(r=>r.test(x)))){res.push(`${b}.${c}.${v}`);per[b]=(per[b]||0)+1}}}
+ out+=`<h3>${res.length} verses</h3>${SQ.order==="time"?`<p class="m">Timeline order is approximate: each book is placed by when its events happened or it was traditionally written.</p>`:""}<p class="m">${Object.keys(per).map(b=>bname(b)+" "+per[b]).join(" · ")}</p>`+res.slice(0,SQ.lim).map(id=>verseRow(t,id,lm,cl)).join("")+
+  (res.length>SQ.lim?`<p><button class="a" onclick="SQ.lim+=200;render()">Show more</button></p>`:"");
+ return box+out}
+const esc=t=>String(t).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+function goVerse(v){const [b,c,n]=v.split(".");R.go={b,c,n:n?+n:0};setTab("read")}
+function openEgw(b,p){eb=b;ep=p;setTab("egw")}
+const POS={};
+function setTab(t){POS[tab]=scrollY;tab=t;document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x.dataset.t===t));window.__tabP=render().then(()=>{if(R.jumped)R.jumped=false;else scrollTo(0,POS[t]||0)})}
+const $=document.getElementById("app");
+async function download(id){
+ msg="Downloading "+id+"…";render();
+ try{const r=await fetch("data/"+id+".json");if(!r.ok)throw 0;await putTr(await r.json());msg=""}
+ catch(e){msg="No data/"+id+".json found. Use Import to load a bundle file."}
+ render()}
+async function loadAllLocal(){msg="Loading…";render();let n=0;
+ for(const x of["NKJV","SC","MB","DA","PP","PK","AA","GC","COL","SDABC-EGW","TOPICS-NKJV","TOPICS-TAHMISYAN","XREF-NKJV","NOTES-NKJV","SOURCEBOOK"]){try{const r=await fetch("data/"+x+".json");if(!r.ok)continue;const o=await r.json();
+  if(o.sb)await putSb(o);else if(o.sn)await putSn(o);else if(o.xrefs)await putXref(o);else if(o.paras)await putEgw(o);else if(o.topics)await putTop(o);else if(o.books)await putTr(o);else continue;n++}catch(e){}}
+ if(window.loadXref)await loadXref();msg=n?"Loaded "+n+" files from the data folder.":"Could not read the data folder. Start the local server (python3 -m http.server 8000) and open http://localhost:8000, or use Import bundle to pick the files.";render()}
+async function importFile(inp){msg="";for(const f of inp.files){try{const o=JSON.parse(await f.text());if(!o.id||!o.license)throw 0;if(o.sb)await putSb(o);else if(o.paras)await putEgw(o);else if(o.topics)await putTop(o);else if(o.xrefs)await putXref(o);else if(o.sn)await putSn(o);else if(o.books)await putTr(o);else throw 0;msg+="Imported "+o.id+". "}catch(e){msg+=f.name+": invalid bundle. "}}if(window.loadXref)await loadXref();render()}
+async function render(){
+ const have=await allTr(),ids=have.map(h=>h.id),eg=await allEgw(),tp=await allTop();
+ const rd=document.getElementById("reader");rd.style.display=tab==="read"?"block":"none";$.style.display=tab==="read"?"none":"block";R.eg=eg;R.have=have;R.tp=tp;if(tab!=="read"&&tab!=="egw"&&window.hideBars)hideBars();
+ if(tab==="lib")$.innerHTML=`<h2>Library</h2><p class="m">${msg}</p>`+
+  Object.keys(LANGS).map(l=>`<h3>${LANGS[l]}</h3>`+CATALOG.filter(c=>c.lang===l).map(c=>
+   `<div class="card"><b>${c.name}</b><br><small>${c.license}</small><br><br>`+
+   (ids.includes(c.id)?`<button class="a" onclick="delTr('${c.id}').then(render)">Remove</button> <small>✓ offline</small>`
+   :`<button class="a" onclick="download('${c.id}')">Download</button>`)+`</div>`).join("")).join("")+
+  `<h3>Ellen G. White</h3>`+(eg.length?eg.map(b=>`<div class="card"><b>${esc(b.title)}</b> <small>(${b.lang}) ${esc(b.license)}</small><br><br><button class="a" onclick="delEgw('${b.id}').then(render)">Remove</button></div>`).join(""):`<p class="m">None installed. Import a bundle below.</p>`)+
+  `<p><button class="a" onclick="loadAllLocal()">Load all my files from the data folder</button></p><p><label>Import bundle (.json)<input type="file" accept=".json" multiple onchange="importFile(this)"></label></p>`;
+ else if(tab==="notes"){await ensureUser();$.innerHTML=notesView()}
+ else if(tab==="search"){
+  const t=have.find(h=>h.id===S.tr)||have[0];
+  if(!t){$.innerHTML=`<h2>Search</h2><p>Download or import a Bible first (Library).</p>`;return}
+  const f=document.activeElement&&document.activeElement.id==="sq";
+  window.__sv={t,eg,tp};$.innerHTML=`<h2>Search</h2>`+searchView(t,eg,tp);
+  const i=document.getElementById("sq");if(i&&f){i.focus();i.setSelectionRange(i.value.length,i.value.length)}
+ }
+ else if(tab==="egw"){
+  await ensureUser();abar();
+  const bs=eg.filter(b=>S.egw[b.lang]);
+  if(!bs.length){$.innerHTML=`<h2>Ellen G. White</h2><p>No books available. Install a bundle in Library, and check the switch in Me.</p>`;return}
+  const b=bs.find(x=>x.id===eb)||bs[0];eb=b.id;const chs2=[...new Set(b.paras.map(p=>p.chapter||""))];const hit=ep&&b.paras.find(p=>p.id===ep);const cur=hit?(ec=hit.chapter||""):(chs2.includes(ec)?ec:chs2[0]);
+  $.innerHTML=`<select onchange="eb=this.value;ep=null;ec=null;render()">${bs.map(x=>`<option value="${x.id}" ${x.id===b.id?"selected":""}>${esc(x.title)}</option>`).join("")}</select><select onchange="ec=this.value;render()">${chs2.map(c=>`<option ${c===cur?"selected":""}>${esc(c)}</option>`).join("")}</select><h2>${esc(b.title)}</h2>`+
+   b.paras.filter(p=>(p.chapter||"")===cur).map(p=>{const m=R.marks.get(p.id);return `<div class="card pc${m?" hl":""}${R.ni.has(p.id)?" hn":""}${R.sel.has(p.id)?" sel":""}" data-id="${p.id}"${m?` data-c="${m}"`:""} ${p.id===ep?'style="outline:2px solid var(--ac)"':""}><small>${esc(p.id)}</small><br>${esc(p.text)}<br>`+
+    (p.refs||[]).map(r=>`<button class="a" onclick="goVerse('${r}')">${isV(r)?refLabel([r]):r}</button> `).join("")+`</div>`}).join("");
+ }
+ else if(tab==="me")$.innerHTML=(window.meOptions?meOptions():"")+`<h2>Study sources</h2><p class="m">Choose what shows in the study panel, per language.</p>`+
+  Object.keys(LANGS).map(l=>`<div class="card"><b>${LANGS[l]}</b>
+   <label>Ellen G. White writings<input type="checkbox" ${S.egw[l]?"checked":""} onchange="S.egw.${l}=this.checked;save()"></label>
+   <label>SDA Bible Commentary<input type="checkbox" ${S.com[l]?"checked":""} onchange="S.com.${l}=this.checked;save()"></label></div>`).join("")+meMarks();
+ else{await readerShow(have,eg)}}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{sel=null;if(window.clearSel)clearSel();if(window.nsClear)nsClear();setTab(b.dataset.t)});
+if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{});
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+render();
+</script></body></html>
